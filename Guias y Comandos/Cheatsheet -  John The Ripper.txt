@@ -46,9 +46,8 @@ Filtrar por usuario:
 
 5 - Optimizacion del Rendimiento de John The Ripper
 
-- Uso de CPU (OpenMP):  Permite a JTR dividir la carga de trabajo entre multiples nucleos de CPU.
-                                             Para habilitar OpenMP y aprovechar el paralelismo, a menudo es necesario
-                                             compilar JTR con la bandera -fopenmp.
+- Uso de CPU (OpenMP): Permite a JTR dividir la carga de trabajo entre multiples nucleos de CPU.
+Para habilitar OpenMP y aprovechar el paralelismo, es necesario compilar JTR con la bandera -fopenmp.
  
 - OMP_NUM_THREADS=4 john --incremental hashes.txt
 => Esto forzara a JTR a utilizar 4 hilos de CPU para el ataque, distribuyendo la carga de trabajo
@@ -56,3 +55,4 @@ y acelerando el proceso.
    
 - john --fork=4 hashes.txt => Esto ejecutara 4 procesos de JTR en paralelo, cada uno aprovechando
 un nucleo de CPU disponible.
+
