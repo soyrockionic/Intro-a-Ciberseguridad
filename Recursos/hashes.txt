@@ -1,0 +1,4 @@
+juan1234:$6$rounds=656000$iiMkKodhFX38e0sR$t8F0pByf6IKdTavOdZ/OxgCF24fvMwJyu2fcX0aC4.Mw/BycNPcgl812PA3wzjCMi77qgFebTWswcraVnrHsU.:1000:1000::/home/juan1234:/bin/bash
+rocky:$6$rounds=656000$pqZbhAdwc0VQeLb7$8P./giqc2wjV2/6zrQ7vKMqkAqaYUyETesmn6RsTWKRatZB6TMCV9k1XOhonSSGHu.KJNhAZs8gIzqbBgSH00.:1000:1000::/home/rocky:/bin/bash
+soyrock:$6$rounds=656000$LIQ7xlvRXjPF2K3c$F3uf4zSopsLMpnxtDeM5uKzZhNxN/DC/UMC1OVxzMPvw.2TAfvrEV./.ALEf3xx89O0cFyvCfhbqHybDIup./.:1000:1000::/home/soyrock:/bin/bash
+juan37:$6$rounds=656000$3jny.Vxkvbt6g43E$feOaOTXHDujM3gWkCRxGGH9FkQbWjp75vhrebbS.gaKi8drogKUxzphZqKkQB.SNqus0x6jqhQG3ORHI9AXBO0:1000:1000::/home/juan37:/bin/bash

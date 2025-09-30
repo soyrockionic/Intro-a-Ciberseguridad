@@ -1,0 +1,114 @@
+********************Consola de Windows********************
+
+Navegacion y Directorios:
+
+mkdir nombre => Crear directorio.
+cd nombre => Entrar en directorio.
+dir => Listar archivos/carpetas en el directorio actual.
+
+Archivos:
+
+type nul > archivo.txt => Crear archivo vacio.
+REN viejo.txt nuevo.txt => Renombrar archivo/directorio.
+TYPE archivo.txt => Mostrar contenido del archivo.
+echo "texto" >> archivo.txt => Agregar texto a un archivo existente.
+sort archivo.txt => Ordenar y mostrar contenido (en pantalla o redirigir a otro archivo).
+icacls * => Muestra los permisos de los archivos
+
+Usuarios y Seguridad:
+
+whoami => Usuario actual.
+whoami /user => Usuario + SID.
+whoami /groups => Pertenencia a grupos + atributos.
+whoami /priv => Privilegios del usuario.
+
+Auditoria:
+
+doskey /history => Ver historial de comandos ejecutados (huellas del atacante).
+
+********************Consola de Git Bash / Linux********************
+
+Gestion de usuarios y grupos:
+
+adduser nuevo_usuario => Crea un nuevo usuario.
+passwd nuevo_usuario => Asigna o cambia la contraseña del usuario.
+addgroup nuevo_grupo => Crea un nuevo grupo.
+adduser usuario nuevo_grupo => Agrega el usuario al grupo
+su - nuevo_usuario => Cambia la sesion al usuario indicado.
+passwd usuario => cambia la contraseña de ese usuario.
+
+Navegacion y Orientacion:
+
+pwd => Muestra el directorio actual. Evita ejecutar comandos destructivos en la carpeta equivocada.
+ls, ls -la => Lista archivos. Con -la muestra ocultos y detalles.
+cd /ruta => Cambia de directorio. Explorar /var/log (logs), /etc (configs), /tmp (archivos temporales maliciosos).
+cd /home/otrousuario => desde usuario root accedo a las carpetas de otro usuario
+
+Creacion y Gestion de Archivos:
+
+mkdir carpeta => Crea directorios. Preparar entorno de analisis.
+touch archivo.txt => Crea archivo vacio o actualiza fecha de modificacion. Verificar o simular
+                                 ataques de timestomping.
+mv archivo destino => Mueve o renombra archivos. Poner binarios sospechosos en cuarentena.
+rm archivo => Elimina archivos/carpetas. Irreversible. Borrar scripts maliciosos en /tmp.
+                       Siempre confirmar con pwd.
+
+Lectura e Inspeccion de Archivos:
+
+cat archivo => Muestra contenido completo. Leer .bash_history y configs alteradas.
+head -n 20 archivo => Muestra primeras n lineas. Revisar cabecera de logs/configs.
+tail -n 50 archivo => Muestra ultimas n lineas. Ver actividad reciente de un log.
+tail -f archivo => Sigue archivo en tiempo real. Monitorear ataques de fuerza bruta en auth.log.
+
+Edicion de Archivos:
+
+nano archivo => Editor de texto simple en terminal. Modificar configs seguras (sshd_config, crontab)
+
+Permisos y Propiedades:
+
+ls -l archivo => Muestra permisos, dueño, grupo, tamaño. Detectar permisos debiles o SUID sospechosos.
+chmod u+x archivo => agrega ejecucion al dueño.
+chmod g-w archivo => quita escritura al grupo.
+chmod o-r archivo => quita lectura a otros.
+chmod 644 archivo =>
+- Dueño: rw- (4+2=6).
+- Grupo: r-- (4).
+- Otros: r-- (4).
+chmod 755 script.sh => Cambia permisos con valores octales (r=4,w=2,x=1).
+- Dueño: rwx (7).
+- Grupo: r-x (5).
+- Otros: r-x (5).
+chown usuario archivo => cambia dueño.
+chown usuario:grupo archivo => cambia dueño y grupo.
+whoami => Muestra usuario actual. Confirma si conseguiste escalada de privilegios
+groups usuario => Muestra grupos a los que pertenece un usuario. Detectar acceso privilegiado oculto.
+
+Comandos utiles en forense y pentesting:
+
+history => Lista comandos ejecutados. Ver huellas del atacante.
+history | grep ssh => Filtra comandos relacionados con ssh.
+ls -la /etc | grep ".conf" => Lista todos los archivos de configuracion (*.conf) en /etc.
+cat /etc/services | grep "ssh" => Ver puerto asignado a ssh.
+find /etc -name "sshd_config" => ver si tocaron sshd_config para permitir root login.
+find /var -type d -name "tmp" => Busca directorios temporales. Ver si dejaron archivos sospechosos
+                                                    en /tmp o /var/temp.
+
+Comandos de red:
+
+ip addr show => Muestra todas las interfaces de red.
+arp -a => Muestra la tabla ARP (IP <=> MAC) conocida en tu maquina.
+sudo netdiscover -r 192.168.1.0/24 => Devuelve IP, MAC y vendor de cada dispositivo que responde.
+netstat -tulpn => Lista procesos que escuchan en puertos TCP/UDP (con PID/Programa).
+nslookup unlp.edu.ar => Consulta DNS simple: resuelve el nombre de dominio a IP(s)
+                                        y muestra el servidor DNS usado.
+dig unlp.edu.ar =>  Mas potente que nslookup: Consulta DNS y muestra detalles.
+dig TXT unlp.edu.ar => Pide registros TXT del dominio.
+curl ifconfig.me => Devuelve la ip publica.
+
+Reconocimiento con nmap:
+
+nmap -sn 192.168.1.0/24 => Descubrimiento de hosts.
+nmap -sV 192.168.1.1 => Deteccion de versiones.
+nmap -A 192.168.1.1 Escaneo agresivo completo.
+nmap --traceroute 192.168.1.1 Muestra la ruta que toman los paquetes desde mi
+                                               maquina hasta el objetivo.

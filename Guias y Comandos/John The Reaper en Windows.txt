@@ -1,0 +1,31 @@
+Uso de John The Reaper en windows
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+Una vez creado hashes.txt, podes testear/atacar con John The Ripper
+----------------------------------------------------------------------------------------------------------------------------------------------
+# probar con wordlist
+set OMP_NUM_THREADS=2
+john --wordlist=C:\Users\fravega\Downloads\rockyou.txt hashes.txt
+
+Si conoces el tipo de hash (por ejemplo sha512crypt), especificarlo acelera:
+
+john --format=sha512crypt --wordlist=rockyou.txt hashes.txt
+
+Fijar hilos (si el binario soporta OpenMP):
+
+set OMP_NUM_THREADS=2 => Segun los nucleos del hardware
+
+john --incremental hashes.txt
+
+Repartir carga con --node (ejecutar varias instancias en CMD):
+
+john --session=s1 --node=1/2 --wordlist=C:\Users\fravega\Downloads\rockyou.txt hashes.txt
+john --session=s2 --node=2/2 --wordlist=C:\Users\fravega\Downloads\rockyou.txt hashes.txt
+
+Si detener el  proceso presiona: Ctrl+C en cada una, luego q para guardar la sesion.
+Podes restaurar la sesion luego con: john --restore=s1 o john --restore=s2, segun la que
+se ha cerrado.
+
+# ver lo ya crackeado
+john --show hashes.txt
+

@@ -1,0 +1,69 @@
+1 - Preparar archivo de hashes
+
+Combinar ambos archivos en un unico fichero (hashes.txt) con el formato que John entiende:
+sudo unshadow /etc/passwd /etc/shadow > hashes.txt
+
+
+2 - Modos de ataque
+
+Modo diccionario => (Wordlist Attack) : John prueba palabras de la lista (rockyou.txt)
+                                                               contra los hashes
+
+- john --wordlist=/usr/share/wordlists/rockyou.txt hashes.txt
+
+Ejemplo de comando con reglas de mangling:
+- john --wordlist=/usr/share/wordlists/rockyou.txt --rules hashes.txt
+
+Modo de ataque de fuerza bruta => Incremental Mode : Prueba todas las combinaciones posibles segun
+                                                                                         el alfabeto y longitudes configuradas.
+
+- john --incremental hashes.txt
+
+Modo (Single Crack) => Su eficiencia radica en que JTR utiliza informacion directamente
+                                       relacionada con el usuario
+
+- john --single hashes.txt
+
+
+3 - Manejo de sesiones
+
+Guardar una sesion con nombre:
+
+- john --session=mi_auditoria hashes.txt
+
+- Ctrl + C + q => cierro la session y la guardo.
+
+Restaurar una sesion especifica:
+
+- john --restore=mi_auditoria
+
+
+4 - Ver contraseñas descifradas
+
+- john --show hashes.txt
+
+Filtrar por usuario:
+
+- john --show --users=nombre_usuario hashes.txt
+
+Filtrar por UID (Root) => Identificar rapidamente las contraseñas crackeadas correspondientes al
+                                       usuario root (que generalmente tiene el UID 0 en sistemas Linux).
+
+- john --show --users=0 hashes.txt
+
+
+5 - Optimizacion del Rendimiento de John The Ripper
+
+     - Uso de CPU (OpenMP):  Permite a JTR dividir la carga de trabajo entre multiples nucleos de CPU.
+                                             Para habilitar OpenMP y aprovechar el paralelismo, a menudo es necesario
+                                             compilar JTR con la bandera -fopenmp.
+ 
+       - OMP_NUM_THREADS=4 john --incremental hashes.txt => Esto forzara a JTR a utilizar 4 hilos de CPU
+                                                                                                   para el ataque, distribuyendo la carga de
+                                                                                                   trabajo y acelerando el proceso.
+
+     --fork: Esta opcion permite a JTR utilizar multiples procesos para el descifrado
+   
+       - john --fork=4 hashes.txt => Esto ejecutara 4 procesos de JTR en paralelo, cada uno aprovechando un
+                                                    nucleo de CPU disponible.
+
