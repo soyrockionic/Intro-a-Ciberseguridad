@@ -1,2 +1,2 @@
-# Intro-a-Ciberseguridad
+# Intro a Ciberseguridad
 Introduccion a Linux y Ciberseguridad
