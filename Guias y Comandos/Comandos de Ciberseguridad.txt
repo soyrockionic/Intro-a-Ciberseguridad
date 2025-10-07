@@ -31,11 +31,11 @@ doskey /history => Ver historial de comandos ejecutados (huellas del atacante).
 Gestion de usuarios y grupos:
 
 adduser nuevo_usuario => Crea un nuevo usuario.
-passwd nuevo_usuario => Asigna o cambia la contrase�a del usuario.
+passwd nuevo_usuario => Asigna o cambia la contraseña del usuario.
 addgroup nuevo_grupo => Crea un nuevo grupo.
 adduser usuario nuevo_grupo => Agrega el usuario al grupo
 su - nuevo_usuario => Cambia la sesion al usuario indicado.
-passwd usuario => cambia la contrase�a de ese usuario.
+passwd usuario => cambia la contraseña de ese usuario.
 
 Navegacion y Orientacion:
 
@@ -66,20 +66,20 @@ nano archivo => Editor de texto simple en terminal. Modificar configs seguras (s
 
 Permisos y Propiedades:
 
-ls -l archivo => Muestra permisos, due�o, grupo, tama�o. Detectar permisos debiles o SUID sospechosos.
-chmod u+x archivo => agrega ejecucion al due�o.
+ls -l archivo => Muestra permisos, dueño, grupo, tamaño. Detectar permisos debiles o SUID sospechosos.
+chmod u+x archivo => agrega ejecucion al dueño.
 chmod g-w archivo => quita escritura al grupo.
 chmod o-r archivo => quita lectura a otros.
 chmod 644 archivo =>
-- Due�o: rw- (4+2=6).
+- Dueño: rw- (4+2=6).
 - Grupo: r-- (4).
 - Otros: r-- (4).
 chmod 755 script.sh => Cambia permisos con valores octales (r=4,w=2,x=1).
-- Due�o: rwx (7).
+- Dueño: rwx (7).
 - Grupo: r-x (5).
 - Otros: r-x (5).
-chown usuario archivo => cambia due�o.
-chown usuario:grupo archivo => cambia due�o y grupo.
+chown usuario archivo => cambia dueño.
+chown usuario:grupo archivo => cambia dueño y grupo.
 whoami => Muestra usuario actual. Confirma si conseguiste escalada de privilegios
 groups usuario => Muestra grupos a los que pertenece un usuario. Detectar acceso privilegiado oculto.
 
@@ -89,6 +89,7 @@ history => Lista comandos ejecutados. Ver huellas del atacante.
 history | grep ssh => Filtra comandos relacionados con ssh.
 ls -la /etc | grep ".conf" => Lista todos los archivos de configuracion (*.conf) en /etc.
 cat /etc/services | grep "ssh" => Ver puerto asignado a ssh.
+cat /etc/shadow => Ver hashes de contraseñas (requiere root).
 find /etc -name "sshd_config" => ver si tocaron sshd_config para permitir root login.
 find /var -type d -name "tmp" => Busca directorios temporales. Ver si dejaron archivos sospechosos
                                                     en /tmp o /var/temp.
@@ -111,4 +112,5 @@ nmap -sn 192.168.1.0/24 => Descubrimiento de hosts.
 nmap -sV 192.168.1.1 => Deteccion de versiones.
 nmap -A 192.168.1.1 Escaneo agresivo completo.
 nmap --traceroute 192.168.1.1 Muestra la ruta que toman los paquetes desde mi
+
                                                maquina hasta el objetivo.
