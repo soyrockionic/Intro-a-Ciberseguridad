@@ -1,0 +1,65 @@
+Reto: Weird PCAP
+
+Interceptamos algo de trafico de red, pero a primera vista nada parece sospechoso.
+¿Puedes encontrar lo que esta oculto?
+
+********************************************************************************************************************
+
+** Analisis **
+
+Comenzamos analizando el archivo de captura proporcionado weird.pcap.
+Una comprobacion de la jerarquia de protocolos ( tshark -z io,phs) revelo un
+trafico DNS significativo.
+
+Inspeccionando las consultas DNS específicamente:
+
+- tshark -r weird.pcap -Y dns -T fields -e dns.qry.name
+
+Observamos una serie de consultas de busqueda DNS inversa (PTR) sospechosas
+en el formato <IP>.in-addr.arpa:
+
+85.78.76.80.in-addr.arpa
+123.67.48.118.in-addr.arpa
+51.114.84.95.in-addr.arpa
+95.99.104.52.in-addr.arpa
+110.78.101.124.in-addr.arpa
+95.85.115.49.in-addr.arpa
+110.103.95.68.in-addr.arpa
+78.83.33.33.in-addr.arpa
+125.192.180.219.in-addr.arpa
+
+** Descodificacion **
+
+Las direcciones IP consultadas parecían ser portadoras de los datos de la bandera,
+en lugar de direcciones de red legitimas. Extrajimos los octetos de las IP y los convertimos
+a ASCII.
+
+Por ejemplo, la primera IP 85.78.76.80:
+
+85 => U
+78 => N
+76 => L
+80 => P
+
+Procediendo con la lista completa:
+
+1 - 85.78.76.80 => UNLP
+2 - 123.67.48.118 => {C0v
+3 - 51.114.84.95 => 3rT_
+4 - 95.99.104.52 => _ch4
+5 - 110.78.101.124 => nNe|
+6 - 95.85.115.49 => _Us1
+7 - 110.103.95.68 => ng_D
+8 - 78.83.33.33 => ¡NS!!
+9 - 125... => } (mas relleno/ruido)
+
+** Bandera **
+
+Al concatenar los segmentos decodificados se revela la bandera:
+
+UNLP{C0v3rT__ch4nNe|_Us1ng_DNS!!}
+
+********************************************************************************************************************
+Si tshark no esta en el PATH, usar este comando:
+
+"C:\Program Files\Wireshark\tshark.exe" -r weird.pcap -Y dns -T fields -e dns.qry.name
